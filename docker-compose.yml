@@ -1,0 +1,28 @@
+services:
+  questdb:
+    image: questdb/questdb:7.3.9
+    hostname: questdb
+    container_name: questdb
+    ports:
+      - "9000:9000"
+      - "9009:9009"
+    restart: unless-stopped
+    environment:
+      - QDB_PG_READONLY_USER_ENABLED=true
+    volumes:
+      - questdb-storage:/var/lib/questdb
+
+  grafana:
+    image: grafana/grafana-oss:10.1.0
+    hostname: grafana
+    container_name: grafana
+    ports:
+      - "3756:3000"
+    restart: unless-stopped
+    environment:
+      - GF_INSTALL_PLUGINS=ae3e-plotly-panel
+    volumes:
+      - grafana-storage:/var/lib/grafana
+volumes:
+  grafana-storage: {}
+  questdb-storage: {}
