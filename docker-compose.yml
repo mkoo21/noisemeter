@@ -5,7 +5,6 @@ services:
     container_name: questdb
     ports:
       - "9000:9000"
-      - "9009:9009"
     restart: unless-stopped
     environment:
       - QDB_PG_READONLY_USER_ENABLED=true
@@ -16,13 +15,20 @@ services:
     image: grafana/grafana-oss:10.1.0
     hostname: grafana
     container_name: grafana
-    ports:
-      - "3756:3000"
     restart: unless-stopped
     environment:
       - GF_INSTALL_PLUGINS=ae3e-plotly-panel
     volumes:
       - grafana-storage:/var/lib/grafana
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3756:3756"
+    volumes:
+      - ${PWD}/nginx.conf:/etc/nginx/conf.d/default.conf
 volumes:
   grafana-storage: {}
   questdb-storage: {}
