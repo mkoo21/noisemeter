@@ -30,5 +30,10 @@ services:
     volumes:
       - ${PWD}/nginx.conf:/etc/nginx/conf.d/default.conf
 volumes:
-  grafana-storage: {}
+  grafana-storage:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/grafana-storage'
   questdb-storage: {}
